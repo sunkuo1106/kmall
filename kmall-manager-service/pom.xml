@@ -9,9 +9,9 @@
     </parent>
 
     <groupId>com.kgc.kmall</groupId>
-    <artifactId>kmall-user-service</artifactId>
+    <artifactId>kmall-manager-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kmall-user-service</name>
+    <name>kmall-manager-service</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

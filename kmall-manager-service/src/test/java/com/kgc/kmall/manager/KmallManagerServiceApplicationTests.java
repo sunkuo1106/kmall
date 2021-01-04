@@ -1,7 +1,7 @@
 package com.kgc.kmall.manager;
 
 import com.kgc.kmall.bean.PmsBaseCatalog1;
-import com.kgc.kmall.manager.utils.RedisUtil;
+import com.kgc.kmall.utils.RedisUtil;
 import com.kgc.kmall.service.CatalogService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

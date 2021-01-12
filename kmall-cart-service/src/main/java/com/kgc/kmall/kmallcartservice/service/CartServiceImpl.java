@@ -83,7 +83,7 @@ public class CartServiceImpl implements CartService {
         try {
             jedis = redisUtil.getJedis();
             List<String> hvals  = jedis.hvals("user:" + memberId + ":cart");
-            if(hvals!=null){
+            if(hvals!=null&&hvals.size()>0){
                 for (String hval : hvals) {
                     OmsCartItem omsCartItem = JSON.parseObject(hval, OmsCartItem.class);
                     omsCartItems.add(omsCartItem);
@@ -94,6 +94,8 @@ public class CartServiceImpl implements CartService {
                 OmsCartItemExample example=new OmsCartItemExample();
                 example.createCriteria().andMemberIdEqualTo(Long.parseLong(memberId));
                 omsCartItems = omsCartItemMapper.selectByExample(example);
+                System.out.println(omsCartItems.size());
+                flushCartCache(memberId);
             }
         } catch (Exception e) {
             // 处理异常，记录系统日志
@@ -106,5 +108,16 @@ public class CartServiceImpl implements CartService {
             jedis.close();
         }
         return omsCartItems;
+    }
+
+    @Override
+    public void checkCart(OmsCartItem omsCartItem) {
+        OmsCartItemExample example=new OmsCartItemExample();
+        OmsCartItemExample.Criteria criteria = example.createCriteria();
+        criteria.andMemberIdEqualTo(omsCartItem.getMemberId());
+        criteria.andProductSkuIdEqualTo(omsCartItem.getProductSkuId());
+        omsCartItemMapper.updateByExampleSelective(omsCartItem,example);
+
+        flushCartCache(omsCartItem.getMemberId().toString());
     }
 }
